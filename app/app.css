@@ -84,9 +84,6 @@ body {
     color 0.2s ease;
 }
 
-/* --------------------------------------------------------------------------
-   Skip Navigation - WCAG 2.1 Requirement
-   -------------------------------------------------------------------------- */
 .skip-navigation {
   position: absolute;
   top: -100%;
@@ -107,9 +104,6 @@ body {
   outline-offset: 2px;
 }
 
-/* --------------------------------------------------------------------------
-   Focus States - WCAG 2.1 Level AA (2px minimum outline offset)
-   -------------------------------------------------------------------------- */
 :focus {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
@@ -131,9 +125,6 @@ body {
   }
 }
 
-/* --------------------------------------------------------------------------
-   Links
-   -------------------------------------------------------------------------- */
 a {
   color: var(--color-accent);
   text-decoration: none;
@@ -149,9 +140,6 @@ a:hover {
   text-decoration: underline;
 }
 
-/* --------------------------------------------------------------------------
-   Headings - Fluid Typography with clamp()
-   -------------------------------------------------------------------------- */
 h1 {
   font-size: clamp(2rem, 5vw, 4.5rem);
   font-weight: 700;
@@ -177,9 +165,6 @@ h4 {
   font-weight: 600;
 }
 
-/* --------------------------------------------------------------------------
-   Custom scrollbar
-   -------------------------------------------------------------------------- */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -198,9 +183,6 @@ h4 {
   background: var(--color-accent);
 }
 
-/* --------------------------------------------------------------------------
-   Container - Fluid with logical properties
-   -------------------------------------------------------------------------- */
 .container {
   width: 100%;
   max-width: clamp(300px, 90vw, 1100px);
@@ -208,17 +190,11 @@ h4 {
   padding-inline: var(--spacing-container);
 }
 
-/* --------------------------------------------------------------------------
-   Section - Using logical properties for spacing
-   -------------------------------------------------------------------------- */
 .section {
   padding-block: var(--spacing-section);
   position: relative;
 }
 
-/* --------------------------------------------------------------------------
-   Main Heading Styles
-   -------------------------------------------------------------------------- */
 .main-heading {
   text-align: center;
   position: relative;

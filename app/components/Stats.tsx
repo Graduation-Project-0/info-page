@@ -14,7 +14,7 @@ const statsData = [
   },
   {
     icon: "fa-globe",
-    number: "10's of millions",
+    number: "10M",
     label: "Financial Costs",
   },
 ];
@@ -76,7 +76,7 @@ export function Stats() {
             style={{
               fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
               fontWeight: 600,
-              margin: "0 auto 3rem",
+              margin: "0 auto 4rem",
               color: "var(--color-text)",
               textAlign: "center",
               position: "relative",
@@ -89,8 +89,12 @@ export function Stats() {
             style={{
               display: "flex",
               justifyContent: "center",
-              gap: "2rem",
+              gap: "3rem",
               flexWrap: "wrap",
+              width: "100%",
+              maxWidth: "1200px",
+              margin: "0 auto",
+              padding: "0 1rem",
             }}
           >
             {statsData.map((stat, index) => (
@@ -108,11 +112,13 @@ export function Stats() {
                 }}
                 style={{
                   textAlign: "center",
-                  padding: "2rem",
+                  padding: "2.5rem 2rem",
                   background: "var(--color-bg-card)",
                   borderRadius: "var(--radius-lg)",
                   border: "1px solid var(--color-border)",
-                  minWidth: "200px",
+                  flex: "1 1 0",
+                  minWidth: "280px",
+                  maxWidth: "400px",
                 }}
               >
                 <i
@@ -120,7 +126,7 @@ export function Stats() {
                   aria-hidden="true"
                   style={{
                     display: "block",
-                    marginBottom: "1rem",
+                    marginBottom: "1.5rem",
                     color: "var(--color-accent)",
                   }}
                 />
@@ -131,7 +137,7 @@ export function Stats() {
                     fontSize: "2.5rem",
                     fontWeight: 700,
                     color: "var(--color-text)",
-                    marginBottom: "0.5rem",
+                    marginBottom: "0.75rem",
                   }}
                 >
                   {stat.number}
@@ -141,6 +147,7 @@ export function Stats() {
                   style={{
                     color: "var(--color-text-muted)",
                     fontSize: "1rem",
+                    lineHeight: 1.5,
                   }}
                 >
                   {stat.label}

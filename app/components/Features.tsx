@@ -6,6 +6,7 @@ const featuresData = [
     id: "url-scanning",
     filter: "URL Scanning",
     image: "/assets/icons/URL Scann.svg",
+    backgroundImage: "/assets/feature1.jpg",
     title: "URL Scanning",
     description:
       "Detect phishing, malicious redirects, and dangerous domains before you click.",
@@ -14,6 +15,7 @@ const featuresData = [
     id: "file-scanning",
     filter: "File Scanning",
     image: "/assets/icons/file.svg",
+    backgroundImage: "/assets/feature2.jpg",
     title: "File Scanning",
     description:
       "Static-first file inspection to catch malware without executing suspicious content.",
@@ -22,6 +24,7 @@ const featuresData = [
     id: "email-scanning",
     filter: "Email Scanning",
     image: "/assets/icons/email.svg",
+    backgroundImage: "/assets/feature3.jpg",
     title: "Email Scanning",
     description:
       "Spot malicious attachments and social‑engineering patterns in emails.",
@@ -30,6 +33,7 @@ const featuresData = [
     id: "vs-extension",
     filter: "VS Extension",
     image: "/assets/icons/code.svg",
+    backgroundImage: "/assets/feature4.png",
     title: "VS Extension",
     description:
       "Analyze code and dependencies to reduce supply‑chain and vulnerability risk.",
@@ -38,6 +42,7 @@ const featuresData = [
     id: "multimedia-scanning",
     filter: "Multimedia Scanning",
     image: "/assets/icons/media.svg",
+    backgroundImage: "/assets/feature5.png",
     title: "Multimedia Scanning",
     description:
       "Detect hidden payloads and suspicious data inside images, audio, and video.",
@@ -174,11 +179,22 @@ export function Features() {
           className="features-grid our-work-grid"
           style={{
             display: "grid",
-            gridTemplateColumns:
-              "repeat(auto-fill, minmax(min(280px, 100%), 1fr))",
-            gap: "clamp(1rem, 3vw, 2rem)",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "clamp(1.25rem, 2.5vw, 2rem)",
           }}
         >
+          <style>{`
+            @media (max-width: 1024px) {
+              .features-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+              }
+            }
+            @media (max-width: 640px) {
+              .features-grid {
+                grid-template-columns: 1fr !important;
+              }
+            }
+          `}</style>
           {filteredFeatures.map((feature, index) => (
             <motion.article
               key={`${activeFilter}-${feature.id}`}
@@ -187,6 +203,10 @@ export function Features() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{
+                y: -4,
+                boxShadow: "0 12px 24px rgba(34, 197, 94, 0.1)",
+              }}
               layout
               style={{
                 background: "var(--color-bg-card)",
@@ -194,45 +214,72 @@ export function Features() {
                 border: "1px solid var(--color-border)",
                 overflow: "hidden",
                 transition: "0.3s ease",
+                position: "relative",
+                minHeight: "clamp(200px, 25vw, 260px)",
+                boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
               }}
             >
+              {/* Full Rectangular Background Image - More Visible */}
               <div
-                className="feature-card-media"
+                className="feature-card-background"
                 style={{
-                  padding: "clamp(1.5rem, 5vw, 2rem)",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  background: "var(--color-accent-soft)",
-                  minHeight: "clamp(120px, 20vw, 160px)",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  zIndex: 0,
+                  overflow: "hidden",
                 }}
               >
                 <img
-                  src={feature.image}
+                  src={feature.backgroundImage}
                   alt=""
-                  role="img"
                   aria-hidden="true"
                   style={{
-                    width: "clamp(60px, 10vw, 80px)",
-                    height: "clamp(60px, 10vw, 80px)",
-                    objectFit: "contain",
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    transition: "transform 0.5s ease",
                   }}
                   loading="lazy"
                 />
+                {/* Bottom Gradient Fade Effect */}
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background:
+                      "linear-gradient(180deg, rgba(15, 23, 42, 0.3) 0%, rgba(15, 23, 42, 0.6) 40%, var(--color-bg-card) 80%)",
+                    pointerEvents: "none",
+                  }}
+                />
               </div>
+
+              {/* Text Content at Bottom */}
               <div
                 className="feature-card-body"
                 style={{
-                  padding: "clamp(1rem, 3vw, 1.5rem)",
+                  padding: "clamp(1.25rem, 2.5vw, 1.75rem)",
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  zIndex: 1,
                 }}
               >
                 <h3
                   className="feature-card-title"
                   style={{
-                    fontSize: "clamp(1.125rem, 2.5vw, 1.25rem)",
-                    fontWeight: 600,
-                    marginBlockEnd: "0.75rem",
+                    fontSize: "clamp(1rem, 1.75vw, 1.25rem)",
+                    fontWeight: 700,
+                    marginBlockEnd: "0.5rem",
                     color: "var(--color-text)",
+                    textShadow: "0 1px 2px rgba(0, 0, 0, 0.3)",
+                    letterSpacing: "-0.01em",
                   }}
                 >
                   {feature.title}
@@ -243,7 +290,9 @@ export function Features() {
                     color: "var(--color-text-muted)",
                     lineHeight: 1.6,
                     margin: 0,
-                    fontSize: "clamp(0.9rem, 1.5vw, 1rem)",
+                    fontSize: "clamp(0.8rem, 1.25vw, 0.95rem)",
+                    fontWeight: 500,
+                    textShadow: "0 1px 1px rgba(0, 0, 0, 0.2)",
                   }}
                 >
                   {feature.description}
