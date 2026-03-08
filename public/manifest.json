@@ -1,0 +1,29 @@
+{
+  "name": "Vanguard - AI-Powered Antivirus",
+  "short_name": "Vanguard",
+  "description": "Next-gen antivirus built with AI — real-time threat detection, zero-day protection, and peace of mind for your devices.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0c0a",
+  "theme_color": "#1c7304",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/assets/Logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/Logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["security", "utilities"],
+  "lang": "en",
+  "dir": "ltr",
+  "scope": "/",
+  "prefer_related_applications": false
+}
