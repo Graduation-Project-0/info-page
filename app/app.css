@@ -675,18 +675,12 @@ img {
   }
 }
 
-/* --------------------------------------------------------------------------
-   Dark Mode Support (for future light theme)
-   -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   :root {
     /* Already dark by default */
   }
 }
 
-/* --------------------------------------------------------------------------
-   High Contrast Mode Support - WCAG 2.1
-   -------------------------------------------------------------------------- */
 @media (forced-colors: active) {
   .btn-primary {
     border: 2px solid CanvasText;

@@ -240,10 +240,11 @@ export function Header() {
             padding: "0.25rem 0",
             textDecoration: "none",
             minHeight: "44px",
+            position: "relative"
           }}
         >
           <img
-            src="/assets/Logo.png"
+            src="/assets/icons/helmet.svg"
             alt=""
             role="img"
             aria-hidden="true"
@@ -264,9 +265,12 @@ export function Header() {
               fontWeight: 700,
               fontSize: "clamp(1.25rem, 3vw, 1.5rem)",
               letterSpacing: "0.02em",
+              position: "absolute",
+              top: "15px",
+              left: "40px"
             }}
           >
-            VANGUARD
+            ANGUARD
           </span>
         </Link>
 
@@ -394,6 +398,12 @@ export function Header() {
       </nav>
 
       <style>{`
+        /* Logo icon - override global img styles to maintain exact size */
+        .logo-icon {
+          height: 50px !important;
+          width: 40px !important;
+        }
+
         @media (max-width: 768px) {
           .nav-toggle {
             display: flex !important;
