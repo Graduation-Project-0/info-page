@@ -88,13 +88,14 @@ export function Footer() {
           margin: 0;
           display: flex;
           flex-direction: column;
-          // gap: 0rem;
+          gap: 0.75rem;
         }
         .footer-link-item {
           color: var(--color-text-muted);
           text-decoration: none;
           font-size: 0.95rem;
           transition: color 0.2s ease;
+          display: inline-block;
         }
         .footer-link-item:hover {
           color: var(--color-accent);
@@ -121,38 +122,39 @@ export function Footer() {
         @media (max-width: 1024px) {
           .footer-grid-container {
             grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
-            gap: 3rem 2rem;
+            gap: 2.5rem 1.5rem;
           }
         }
         @media (max-width: 768px) {
           .footer-grid-container {
             grid-template-columns: repeat(2, 1fr);
-            gap: 3rem 2rem;
-            padding-top: 3rem;
+            gap: 0.5rem 1.5rem;
+            padding-top: 2.5rem;
           }
           .footer-brand-col {
             grid-column: 1 / -1;
-            text-align: center;
+            text-align: left;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
+          }
+          .footer-brand-col p {
+            max-width: 100% !important;
           }
           .footer-newsletter-col {
             grid-column: 1 / -1;
-            margin-top: 1rem;
+            margin-top: 0.25rem;
           }
         }
         @media (max-width: 640px) {
           .footer-grid-container {
-            grid-template-columns: 1fr;
-            gap: 2.5rem;
-            text-align: center;
-          }
-          .footer-link-list {
-            align-items: center;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.25rem 0.5rem;
+            padding-top: 1rem;
           }
           .footer-newsletter-form {
             flex-direction: column;
+            gap: 0.75rem !important;
           }
           .footer-newsletter-form input,
           .footer-newsletter-form button {
@@ -165,21 +167,25 @@ export function Footer() {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 0.25rem 0;
+          padding: 1.5rem 0;
           color: var(--color-text-muted);
           font-size: 0.875rem;
           flex-wrap: wrap;
-          gap: 1rem;
+          gap: 1.5rem;
         }
         @media (max-width: 768px) {
           .footer-bottom-container {
-            flex-direction: column;
-            text-align: center;
-            justify-content: center;
+            flex-direction: column-reverse;
+            align-items: flex-start;
+            text-align: left;
+            gap: 0.5rem;
+            padding: 0.5rem 0 2rem;
           }
           .footer-legal-links {
-            justify-content: center;
-            margin-top: 0.5rem;
+            justify-content: flex-start;
+            margin-top: 0;
+            flex-wrap: wrap;
+            gap: 1rem !important;
           }
         }
       `}</style>
@@ -258,7 +264,8 @@ export function Footer() {
                 fontSize: "0.95rem",
               }}
             >
-              Next-generation AI antivirus built for the modern threat landscape. Your first line of defense in the digital world.
+              Next-generation AI antivirus built for the modern threat
+              landscape. Your first line of defense in the digital world.
             </p>
             <div
               style={{
@@ -285,11 +292,31 @@ export function Footer() {
           <div className="footer-links-col">
             <h4 className="footer-heading">Product</h4>
             <ul className="footer-link-list">
-              <li><a href="#features" className="footer-link-item">Features</a></li>
-              <li><a href="#how-it-works" className="footer-link-item">How it Works</a></li>
-              <li><a href="#pricing" className="footer-link-item">Pricing</a></li>
-              <li><a href="#testimonials" className="footer-link-item">Customer Reviews</a></li>
-              <li><a href="#integrations" className="footer-link-item">Integrations</a></li>
+              <li>
+                <a href="#features" className="footer-link-item">
+                  Features
+                </a>
+              </li>
+              <li>
+                <a href="#how-it-works" className="footer-link-item">
+                  How it Works
+                </a>
+              </li>
+              <li>
+                <a href="#pricing" className="footer-link-item">
+                  Pricing
+                </a>
+              </li>
+              <li>
+                <a href="#testimonials" className="footer-link-item">
+                  Customer Reviews
+                </a>
+              </li>
+              <li>
+                <a href="#integrations" className="footer-link-item">
+                  Integrations
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -297,11 +324,31 @@ export function Footer() {
           <div className="footer-links-col">
             <h4 className="footer-heading">Company</h4>
             <ul className="footer-link-list">
-              <li><a href="#about" className="footer-link-item">About Us</a></li>
-              <li><a href="#blog" className="footer-link-item">Security Blog</a></li>
-              <li><a href="#careers" className="footer-link-item">Careers</a></li>
-              <li><a href="#contact" className="footer-link-item">Contact Support</a></li>
-              <li><a href="#partners" className="footer-link-item">Partners</a></li>
+              <li>
+                <a href="#about" className="footer-link-item">
+                  About Us
+                </a>
+              </li>
+              <li>
+                <a href="#blog" className="footer-link-item">
+                  Security Blog
+                </a>
+              </li>
+              <li>
+                <a href="#careers" className="footer-link-item">
+                  Careers
+                </a>
+              </li>
+              <li>
+                <a href="#contact" className="footer-link-item">
+                  Contact Support
+                </a>
+              </li>
+              <li>
+                <a href="#partners" className="footer-link-item">
+                  Partners
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -316,7 +363,8 @@ export function Footer() {
                 lineHeight: 1.5,
               }}
             >
-              Subscribe to our security newsletter to get the latest threat intelligence and product updates.
+              Subscribe to our security newsletter to get the latest threat
+              intelligence and product updates.
             </p>
             <form
               className="footer-newsletter-form"
@@ -343,8 +391,12 @@ export function Footer() {
                   minHeight: "44px",
                   transition: "border-color 0.2s ease",
                 }}
-                onFocus={(e) => e.target.style.borderColor = "var(--color-accent)"}
-                onBlur={(e) => e.target.style.borderColor = "var(--color-border)"}
+                onFocus={(e) =>
+                  (e.target.style.borderColor = "var(--color-accent)")
+                }
+                onBlur={(e) =>
+                  (e.target.style.borderColor = "var(--color-border)")
+                }
               />
               <button
                 type="submit"
@@ -362,8 +414,14 @@ export function Footer() {
                   minHeight: "44px",
                   flexShrink: 0,
                 }}
-                onMouseOver={(e) => e.currentTarget.style.backgroundColor = "var(--color-accent-hover)"}
-                onMouseOut={(e) => e.currentTarget.style.backgroundColor = "var(--color-accent)"}
+                onMouseOver={(e) =>
+                  (e.currentTarget.style.backgroundColor =
+                    "var(--color-accent-hover)")
+                }
+                onMouseOut={(e) =>
+                  (e.currentTarget.style.backgroundColor =
+                    "var(--color-accent)")
+                }
               >
                 {subscribed ? "Subscribed" : "Subscribe"}
               </button>
@@ -376,16 +434,22 @@ export function Footer() {
           <div>
             © {currentYear} Vanguard Security, Inc. All rights reserved.
           </div>
-          <div 
+          <div
             className="footer-legal-links"
             style={{
               display: "flex",
               gap: "1.5rem",
             }}
           >
-            <a href="/privacy" className="footer-link-item">Privacy Policy</a>
-            <a href="/terms" className="footer-link-item">Terms of Service</a>
-            <a href="/cookies" className="footer-link-item">Cookie Policy</a>
+            <a href="/privacy" className="footer-link-item">
+              Privacy Policy
+            </a>
+            <a href="/terms" className="footer-link-item">
+              Terms of Service
+            </a>
+            <a href="/cookies" className="footer-link-item">
+              Cookie Policy
+            </a>
           </div>
         </div>
       </div>
