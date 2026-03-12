@@ -66,21 +66,20 @@ export function Footer() {
         overflow: "hidden",
       }}
     >
-      {/* Background accents */}
       <style>{`
         .footer-grid-container {
           display: grid;
           grid-template-columns: 2fr 1fr 1fr 1.5fr;
-          gap: 4rem 2rem;
-          padding-top: 4rem;
-          padding-bottom: 3rem;
+          gap: 2rem 2rem;
+          padding-top: 2rem;
+          padding-bottom: 1.5rem;
           border-bottom: 1px solid var(--color-border);
         }
         .footer-heading {
           color: var(--color-text);
           font-weight: 600;
           font-size: 1rem;
-          margin-bottom: 1.5rem;
+          margin-bottom: 0.75rem;
           letter-spacing: 0.02em;
         }
         .footer-link-list {
@@ -89,7 +88,7 @@ export function Footer() {
           margin: 0;
           display: flex;
           flex-direction: column;
-          gap: 0.75rem;
+          // gap: 0rem;
         }
         .footer-link-item {
           color: var(--color-text-muted);
@@ -166,7 +165,7 @@ export function Footer() {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 1.5rem 0;
+          padding: 0.25rem 0;
           color: var(--color-text-muted);
           font-size: 0.875rem;
           flex-wrap: wrap;
