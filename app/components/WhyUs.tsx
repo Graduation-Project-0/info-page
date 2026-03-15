@@ -34,7 +34,7 @@ const whyItems = [
   },
   {
     number: "06",
-    title: "24/7 Dedicated Support",
+    title: "24/7 Dedicated",
     description:
       "Our security experts are always on standby to walk you through every alert, answer every question, and resolve every concern, so you never face a threat alone.",
   },
