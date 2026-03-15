@@ -40,7 +40,7 @@ const featuresData = [
   },
   {
     id: "multimedia-scanning",
-    filter: "Multimedia Scanning",
+    filter: "Multimedia",
     image: "/assets/icons/media.svg",
     backgroundImage: "/assets/feature5.png",
     title: "Multimedia Scanning",
@@ -81,8 +81,11 @@ const filters = [
   "URL Scanning",
   "File Scanning",
   "Email Scanning",
-  "VS Extension",
-  "Multimedia Scanning",
+  "Multimedia",
+  "Code & Library",
+  "Threat Insight",
+  "Real Time",
+  "Security Overview",
 ];
 
 export function Features() {

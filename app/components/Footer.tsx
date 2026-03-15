@@ -227,7 +227,10 @@ export function Footer() {
               href="#home"
               className="nav-logo"
               style={{
-                marginBottom: "1.25rem",
+                marginBottom: "1.75rem",
+                display: "inline-flex",
+                transform: "scale(1.4)",
+                transformOrigin: "left center",
               }}
             >
               <img
