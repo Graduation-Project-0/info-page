@@ -3,6 +3,7 @@ export { Hero } from "./Hero";
 export { About } from "./About";
 export { Stats } from "./Stats";
 export { Features } from "./Features";
+export { Channels } from "./Channels";
 export { WhyUs } from "./WhyUs";
 export { FAQ } from "./FAQ";
 export { Contact } from "./Contact";

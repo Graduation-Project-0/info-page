@@ -89,6 +89,7 @@ const filters = [
 ];
 
 const HOVER_SCROLL_DELAY_MS = 500;
+const AUTO_SLIDE_MS = 1000;
 
 function FeatureCardInner({
   feature,
@@ -213,6 +214,7 @@ export function Features() {
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const hoverScrollRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pauseAutoSlideRef = useRef(false);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const controls = useAnimation();
 
@@ -278,17 +280,31 @@ export function Features() {
       const gapPx = parseFloat(gapStr) || 16;
       const vw = viewport.getBoundingClientRect().width;
       const trackWidth = track.getBoundingClientRect().width;
-      const stepPx = (trackWidth + gapPx) / n;
-      const contentWidth = trackWidth + (n - 1) * gapPx;
-      const maxTranslatePx = Math.max(0, contentWidth - vw);
+      const scrollWidth = track.scrollWidth;
+      const stepPx = trackWidth / n + gapPx;
+      const maxTranslatePx = Math.max(0, scrollWidth - vw);
       const translatePx = Math.min(carouselIndex * stepPx, maxTranslatePx);
       setTrackTranslatePx(translatePx);
     };
     update();
     const ro = new ResizeObserver(update);
     ro.observe(viewport);
+    ro.observe(track);
     return () => ro.disconnect();
   }, [carouselIndex, activeFilter, filteredFeatures.length]);
+
+  useEffect(() => {
+    if (activeFilter !== "All" || !isInView || maxIndex <= 0) return;
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+    const tick = () => {
+      if (pauseAutoSlideRef.current) return;
+      setCarouselIndex((i) => (i >= maxIndex ? 0 : i + 1));
+    };
+    const id = window.setInterval(tick, AUTO_SLIDE_MS);
+    return () => window.clearInterval(id);
+  }, [isInView, maxIndex, activeFilter, filteredFeatures.length]);
 
   return (
     <section
@@ -384,14 +400,20 @@ export function Features() {
 
         <style>{`
           .feature-card-desc {
-            opacity: 0;
-            max-height: 0;
+            opacity: 1;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
             overflow: hidden;
-            transition: opacity 0.35s ease, max-height 0.35s ease;
+            transition: max-height 0.35s ease;
           }
           .feature-card:hover .feature-card-desc {
-            opacity: 1;
-            max-height: 120px;
+            -webkit-line-clamp: unset;
+            line-clamp: unset;
+            display: block;
+            max-height: 200px;
+            overflow-y: auto;
           }
           .feature-card-body {
             transition: background 0.35s ease, padding 0.35s ease;
@@ -407,8 +429,11 @@ export function Features() {
           }
           @media (hover: none) {
             .feature-card-desc {
-              opacity: 1;
-              max-height: 120px;
+              -webkit-line-clamp: unset;
+              line-clamp: unset;
+              display: block;
+              max-height: none;
+              overflow: visible;
             }
             .feature-card-body {
               background: linear-gradient(
@@ -428,6 +453,25 @@ export function Features() {
           .features-carousel-card {
             flex: 0 0 calc(100% / var(--cards, 8));
             min-width: 0;
+          }
+          .features-carousel-spacer {
+            flex: 0 0 calc(100% / var(--cards, 8));
+            min-width: 0;
+            flex-shrink: 0;
+            pointer-events: none;
+          }
+          .features-grid {
+            display: grid;
+            width: 100%;
+            gap: var(--features-gap, clamp(1.25rem, 2.5vw, 2rem));
+            grid-template-columns: repeat(
+              auto-fill,
+              minmax(
+                calc((100% - 2 * var(--features-gap, 1rem)) / 3),
+                calc((100% - 2 * var(--features-gap, 1rem)) / 3)
+              )
+            );
+            justify-content: start;
           }
           .features-carousel-arrow {
             position: absolute;
@@ -475,10 +519,22 @@ export function Features() {
               width: 40px;
               height: 40px;
             }
+            .features-grid {
+              grid-template-columns: repeat(
+                auto-fill,
+                minmax(
+                  calc((100% - 1 * var(--features-gap, 1rem)) / 2),
+                  calc((100% - 1 * var(--features-gap, 1rem)) / 2)
+                )
+              );
+            }
           }
           @media (max-width: 640px) {
             .features-carousel-card {
               flex: 0 0 100%;
+            }
+            .features-grid {
+              grid-template-columns: 1fr;
             }
           }
         `}</style>
@@ -488,12 +544,20 @@ export function Features() {
           role="tabpanel"
           aria-labelledby={`${activeFilter.toLowerCase()}-tab`}
           className="features-carousel"
+          onMouseEnter={() => {
+            pauseAutoSlideRef.current = true;
+          }}
+          onMouseLeave={() => {
+            pauseAutoSlideRef.current = false;
+          }}
           style={{
             position: "relative",
             width: "100%",
             overflow: "hidden",
             paddingInline: "clamp(0.5rem, 2vw, 1rem)",
             ["--features-gap" as string]: "clamp(1.25rem, 2.5vw, 2rem)",
+            ["--carousel-chevron-gutter" as string]:
+              "clamp(1.35rem, 4.5vw, 2.75rem)",
           }}
         >
           {activeFilter === "All" ? (
@@ -526,7 +590,12 @@ export function Features() {
               <div
                 ref={viewportRef}
                 className="features-carousel-viewport"
-                style={{ overflow: "hidden", width: "100%" }}
+                style={{
+                  overflow: "hidden",
+                  width:
+                    "calc(100% - 2 * var(--carousel-chevron-gutter, 1.35rem))",
+                  marginInline: "auto",
+                }}
               >
                 <div
                   ref={trackRef}
@@ -548,18 +617,15 @@ export function Features() {
                       <FeatureCardInner feature={feature} index={index} />
                     </div>
                   ))}
+                  <div
+                    className="features-carousel-spacer"
+                    aria-hidden
+                  />
                 </div>
               </div>
             </>
           ) : (
-            <div
-              className="features-grid"
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 320px), 1fr))",
-                gap: "clamp(1.25rem, 2.5vw, 2rem)",
-              }}
-            >
+            <div className="features-grid">
               {filteredFeatures.map((feature, index) => (
                 <div key={`${activeFilter}-${feature.id}`}>
                   <FeatureCardInner feature={feature} index={index} />

@@ -42,6 +42,7 @@ const whyItems = [
 ];
 
 const HOVER_SCROLL_DELAY_MS = 500;
+const AUTO_SLIDE_MS = 1000;
 
 export function WhyUs() {
   const [carouselIndex, setCarouselIndex] = useState(0);
@@ -50,6 +51,7 @@ export function WhyUs() {
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const hoverScrollRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pauseAutoSlideRef = useRef(false);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const controls = useAnimation();
 
@@ -99,23 +101,37 @@ export function WhyUs() {
     const viewport = viewportRef.current;
     const track = trackRef.current;
     if (!viewport || !track) return;
-    const gapValue = getComputedStyle(viewport.parentElement ?? document.documentElement).getPropertyValue("--why-gap").trim() || "16px";
-    const gapPx = parseFloat(gapValue) || 16;
     const update = () => {
+      const gapStr = getComputedStyle(track).gap?.trim().split(/\s+/)[0] || getComputedStyle(track).columnGap || "16px";
+      const gapPx = parseFloat(gapStr) || 16;
       const vw = viewport.getBoundingClientRect().width;
       const trackWidth = track.getBoundingClientRect().width;
+      const scrollWidth = track.scrollWidth;
       const n = whyItems.length;
-      const stepPx = (trackWidth + gapPx) / n;
-      const contentWidth = trackWidth + (n - 1) * gapPx;
-      const maxTranslatePx = Math.max(0, contentWidth - vw);
+      const stepPx = trackWidth / n + gapPx;
+      const maxTranslatePx = Math.max(0, scrollWidth - vw);
       const translatePx = Math.min(carouselIndex * stepPx, maxTranslatePx);
       setTrackTranslatePx(translatePx);
     };
     update();
     const ro = new ResizeObserver(update);
     ro.observe(viewport);
+    ro.observe(track);
     return () => ro.disconnect();
   }, [carouselIndex]);
+
+  useEffect(() => {
+    if (!isInView || maxIndex <= 0) return;
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+    const tick = () => {
+      if (pauseAutoSlideRef.current) return;
+      setCarouselIndex((i) => (i >= maxIndex ? 0 : i + 1));
+    };
+    const id = window.setInterval(tick, AUTO_SLIDE_MS);
+    return () => window.clearInterval(id);
+  }, [isInView, maxIndex]);
 
   return (
     <section
@@ -153,7 +169,7 @@ export function WhyUs() {
         <style>{`
           .why-us-carousel-track {
             display: flex;
-            gap: clamp(1rem, 3vw, 2rem);
+            gap: var(--why-gap, clamp(1rem, 3vw, 2rem));
             transition: transform 0.4s ease-out;
             will-change: transform;
           }
@@ -162,6 +178,12 @@ export function WhyUs() {
             min-width: 0;
             min-height: 200px;
             display: flex;
+          }
+          .why-us-carousel-spacer {
+            flex: 0 0 calc(100% / var(--why-cards, 6));
+            min-width: 0;
+            flex-shrink: 0;
+            pointer-events: none;
           }
           .why-us-carousel-card .why-item {
             min-height: 200px;
@@ -198,6 +220,9 @@ export function WhyUs() {
             .why-us-carousel-card {
               flex: 0 0 calc(100% / var(--why-cards-mobile, 2));
             }
+            .why-us-carousel-spacer {
+              flex: 0 0 calc(100% / var(--why-cards-mobile, 2));
+            }
             .why-us-carousel-arrow {
               width: 40px;
               height: 40px;
@@ -207,17 +232,28 @@ export function WhyUs() {
             .why-us-carousel-card {
               flex: 0 0 100%;
             }
+            .why-us-carousel-spacer {
+              flex: 0 0 100%;
+            }
           }
         `}</style>
 
         <div
           className="why-us-carousel"
+          onMouseEnter={() => {
+            pauseAutoSlideRef.current = true;
+          }}
+          onMouseLeave={() => {
+            pauseAutoSlideRef.current = false;
+          }}
           style={{
             position: "relative",
             width: "100%",
             overflow: "hidden",
             paddingInline: "clamp(0.5rem, 2vw, 1rem)",
             ["--why-gap" as string]: "clamp(1rem, 3vw, 2rem)",
+            ["--carousel-chevron-gutter" as string]:
+              "clamp(1.35rem, 4.5vw, 2.75rem)",
           }}
         >
           <button
@@ -248,7 +284,12 @@ export function WhyUs() {
           <div
             ref={viewportRef}
             className="why-us-carousel-viewport"
-            style={{ overflow: "hidden", width: "100%" }}
+            style={{
+              overflow: "hidden",
+              width:
+                "calc(100% - 2 * var(--carousel-chevron-gutter, 1.35rem))",
+              marginInline: "auto",
+            }}
           >
             <div
               ref={trackRef}
@@ -336,6 +377,7 @@ export function WhyUs() {
                   </motion.article>
                 </div>
               ))}
+              <div className="why-us-carousel-spacer" aria-hidden />
             </div>
           </div>
         </div>

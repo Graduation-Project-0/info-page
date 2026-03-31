@@ -5,6 +5,7 @@ import {
   About,
   Stats,
   Features,
+  Channels,
   Pricing,
   Testimonials,
   Blog,
@@ -35,6 +36,7 @@ export default function Home() {
         <WhyUs />
         <Stats />
         <Features />
+        <Channels />
         {/* <Pricing /> */}
         <Testimonials />
         {/* <Blog /> */}

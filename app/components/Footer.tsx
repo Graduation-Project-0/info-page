@@ -4,6 +4,7 @@ import { motion, useInView, useAnimation } from "framer-motion";
 const footerLinks = [
   { href: "#home", label: "Home" },
   { href: "#features", label: "Features" },
+  { href: "#channels", label: "Channels" },
   { href: "#pricing", label: "Pricing" },
   { href: "#testimonials", label: "Testimonials" },
   { href: "#blog", label: "Blog" },

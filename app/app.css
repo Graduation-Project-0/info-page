@@ -577,7 +577,7 @@ img {
    -------------------------------------------------------------------------- */
 @media screen and (min-width: 1024px) {
   .container {
-    max-width: 980px;
+    max-width: 900px;
   }
 
   .section {
@@ -1008,6 +1008,244 @@ img {
 .back-to-top:focus {
   outline: 2px solid var(--color-text);
   outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Channels — expandable cards (hover / focus active state)
+   -------------------------------------------------------------------------- */
+:root {
+  --channels-step-color: #93c5fd;
+  --channels-card-title-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+}
+
+/* Match site .container width; min-width:0 avoids flex overflow without widening past max-width */
+#channels .container {
+  min-width: 0;
+}
+
+@media (min-width: 901px) {
+  #channels .container {
+    overflow-x: clip;
+  }
+}
+
+@keyframes channels-fg-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* During column flex resize (folded ↔ active), hide whole card foreground */
+@media (min-width: 901px) {
+  .channels.channels--suppress-foreground .channels-card-fg {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: none;
+  }
+
+  /* After resize: slide content up + fade in */
+  .channels.channels--reveal-foreground .channels-card-fg {
+    animation: channels-fg-reveal 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .channels.channels--reveal-foreground .channels-card-fg {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.channels-bg-layer {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition:
+    opacity 0.35s ease,
+    filter 0.35s ease;
+}
+
+.channels-article {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  padding: clamp(1.75rem, 3.25vw, 2.35rem);
+  min-height: clamp(240px, 32vw, 340px);
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-end;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transform: none;
+}
+
+/* Same card chrome for folded / active / hover — no extra “lift” spacing */
+.channels-column.is-active .channels-article,
+.channels-column:hover .channels-article {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: clamp(1.75rem, 3.25vw, 2.35rem);
+}
+
+.channels-card-fg {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.25rem;
+  text-align: start;
+}
+
+.channels-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0.9rem;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Folded: icon on top, title underneath */
+.card-expandable:not(.active) .channels-card-top {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Expanded: icon left, title beside — start-aligned (no center) */
+.card-expandable.active .channels-card-top {
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.channels-card-top-text {
+  min-width: 0;
+  flex: 1;
+}
+
+.channels-card-step {
+  font-weight: 600;
+  font-size: 0.8125rem;
+  line-height: 1;
+  color: var(--channels-step-color);
+  margin-block-end: 0.4rem;
+  letter-spacing: 0.06em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.channels-card-icon-wrap {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius);
+  background: rgba(28, 115, 4, 0.25);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+}
+
+.channels-card-fg:not(.active) .channels-card-icon-wrap {
+  background: rgba(28, 115, 4, 0.12);
+}
+
+.channels-card-title {
+  font-size: clamp(1.15rem, 2vw, 1.35rem);
+  font-weight: 700;
+  margin: 0;
+  margin-block-start: 0.5rem;
+  color: #fff;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  text-shadow: var(--channels-card-title-shadow);
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-align: start;
+}
+
+.channels-card-description {
+  margin-block-start: 0;
+  width: 100%;
+  text-align: start;
+}
+
+.channels-card-description p {
+  margin: 0;
+  color: rgba(248, 250, 252, 0.88);
+  line-height: 1.65;
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.card-expandable .card-expandable-hidden {
+  opacity: 0;
+  visibility: hidden;
+  max-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  transition:
+    max-height 0.45s ease-in,
+    opacity 0.35s ease,
+    visibility 0s linear 0.35s;
+}
+
+.card-expandable.active .card-expandable-hidden {
+  opacity: 1;
+  visibility: visible;
+  max-height: 32rem;
+  transition:
+    max-height 0.5s ease-in 0.3s,
+    opacity 0.45s ease 0.25s,
+    visibility 0s linear 0.25s;
+}
+
+.card-expandable.active .channels-card-description,
+.card-expandable.active .channels-card-description p {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-expandable .card-expandable-hidden,
+  .card-expandable.active .card-expandable-hidden {
+    transition: none;
+  }
+
+  .channels-bg-layer {
+    transition: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .channels-columns .card-expandable .card-expandable-hidden {
+    opacity: 1;
+    visibility: visible;
+    max-height: none;
+    overflow: visible;
+    transition: none;
+  }
+
+  .channels-columns .channels-card-fg:not(.active) .channels-card-icon-wrap {
+    background: rgba(28, 115, 4, 0.22);
+  }
 }
 
 /* --------------------------------------------------------------------------
