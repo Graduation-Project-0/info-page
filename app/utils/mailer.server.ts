@@ -4,15 +4,31 @@ import { AdminEmail } from "../emails/AdminEmail";
 import { UserConfirmationEmail } from "../emails/UserConfirmationEmail";
 import React from "react";
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
-  secure: process.env.SMTP_PORT === "465", // true for 465, false for other ports
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
+function getTransporter() {
+  const host = process.env.SMTP_HOST;
+  const port = Number(process.env.SMTP_PORT);
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASS;
+
+  if (!host || !port || !user || !pass) {
+    const missing = [];
+    if (!host) missing.push("SMTP_HOST");
+    if (!port) missing.push("SMTP_PORT");
+    if (!user) missing.push("SMTP_USER");
+    if (!pass) missing.push("SMTP_PASS");
+    
+    throw new Error(
+      `Missing SMTP configuration: ${missing.join(", ")}. Please check your environment variables.`
+    );
+  }
+
+  return nodemailer.createTransport({
+    host,
+    port,
+    secure: port === 465, // true for 465, false for other ports
+    auth: { user, pass },
+  });
+}
 
 interface ContactEmailParams {
   name: string;
@@ -29,6 +45,8 @@ export async function sendContactEmail({
 }: ContactEmailParams) {
   const fromName = process.env.SMTP_FROM_NAME || "Vanguard AU";
   const fromEmail = process.env.SMTP_USER;
+
+  const transporter = getTransporter();
 
   // 1. Send email to Admin
   const adminHtml = await render(
