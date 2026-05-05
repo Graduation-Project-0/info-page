@@ -680,11 +680,7 @@ img {
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Already dark by default */
-  }
-}
+/* prefers-color-scheme: dark — no overrides; theme is dark by default */
 
 @media (forced-colors: active) {
   .btn-primary {
@@ -788,13 +784,7 @@ img {
   margin-block-start: auto;
 }
 
-[role="navigation"] {
-  /* Navigation styles */
-}
-
-[role="search"] {
-  /* Search styles */
-}
+/* role="navigation" / role="search" — styles live on components */
 
 /* --------------------------------------------------------------------------
    Responsive Utilities
@@ -1323,11 +1313,8 @@ th {
 }
 
 /* --------------------------------------------------------------------------
-   RTL Support
+   RTL Support — use logical properties (margin-inline, etc.) in rules above
    -------------------------------------------------------------------------- */
-[dir="rtl"] {
-  /* RTL-specific adjustments if needed */
-}
 
 /* --------------------------------------------------------------------------
    Performance Optimizations

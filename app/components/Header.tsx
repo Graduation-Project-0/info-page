@@ -14,6 +14,30 @@ const navItems = [
   { href: "#contact", label: "Contact" },
 ];
 
+type NavBrandLinkProps = {
+  onNavigate: () => void;
+};
+
+function NavBrandLink({ onNavigate }: NavBrandLinkProps) {
+  return (
+    <Link
+      to="#home"
+      className="nav-logo"
+      aria-label="Vanguard – Go to homepage"
+      onClick={onNavigate}
+    >
+      <img
+        src="/assets/icons/helmet.svg"
+        alt=""
+        aria-hidden="true"
+        className="nav-logo-icon"
+        loading="eager"
+      />
+      <span className="nav-logo-text pt-4">ANGUARD</span>
+    </Link>
+  );
+}
+
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
@@ -175,7 +199,6 @@ export function Header() {
         .nav-logo:hover { text-decoration: none; color: var(--color-text); }
         .nav-logo-icon {
           height: 44px !important;
-          width: 44px !important;
           object-fit: contain;
           display: block;
           transition: filter 0.2s ease;
@@ -188,7 +211,8 @@ export function Header() {
           font-weight: 700;
           font-size: clamp(1.1rem, 2.5vw, 1.35rem);
           letter-spacing: 0.04em;
-          margin-left: -2px;
+          margin: 0;
+          padding-top: 0.7rem;
           line-height: 1;
           user-select: none;
         }
@@ -381,6 +405,7 @@ export function Header() {
           .nav-links, .nav-cta { display: none !important; }
           .nav-logo-text {
             padding-top: 0.7rem;
+            font-size: 1rem;
           }
         }
         @media (min-width: 769px) {
@@ -424,21 +449,9 @@ export function Header() {
           aria-label="Main navigation"
           className="nav-inner"
         >
-          <Link
-            to="#home"
-            className="nav-logo"
-            aria-label="Vanguard – Go to homepage"
-            onClick={handleNavClick}
-          >
-            <img
-              src="/assets/icons/helmet.svg"
-              alt=""
-              aria-hidden="true"
-              className="nav-logo-icon"
-              loading="eager"
-            />
-            <span className="nav-logo-text">ANGUARD</span>
-          </Link>
+          <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
+            <NavBrandLink onNavigate={handleNavClick} />
+          </div>
 
           <ul className="nav-links" role="menubar" aria-label="Primary navigation">
             {navItems.map((item) => (
