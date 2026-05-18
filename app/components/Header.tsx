@@ -44,29 +44,12 @@ export function Header() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [scrolled, setScrolled] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     setIsMounted(true);
-    const saved = localStorage.getItem("theme") as "dark" | "light" | null;
-    if (saved) {
-      setTheme(saved);
-      document.documentElement.setAttribute("data-theme", saved);
-    }
   }, []);
-
-  const toggleTheme = () => {
-    const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
-    localStorage.setItem("theme", next);
-    if (next === "light") {
-      document.documentElement.setAttribute("data-theme", "light");
-    } else {
-      document.documentElement.removeAttribute("data-theme");
-    }
-  };
 
   useEffect(() => {
     if (!isMounted) return;
@@ -433,31 +416,11 @@ export function Header() {
         .nav-logo:focus-visible,
         .nav-link:focus-visible,
         .nav-cta:focus-visible,
-        .nav-toggle:focus-visible,
-        .nav-theme-toggle:focus-visible {
+        .nav-toggle:focus-visible {
           outline: 2px solid var(--color-accent);
           outline-offset: 2px;
         }
-        .nav-theme-toggle {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 36px; height: 36px;
-          background: transparent;
-          border: 1px solid var(--color-border);
-          border-radius: 8px;
-          cursor: pointer;
-          color: var(--color-text-muted);
-          transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-          flex-shrink: 0;
-        }
-        .nav-theme-toggle:hover {
-          color: var(--color-text);
-          border-color: var(--color-accent);
-          background: rgba(28,115,4,0.1);
-        }
         @media (max-width: 768px) {
-          .nav-theme-toggle { width: 40px; height: 40px; }
         }
       `}</style>
 
@@ -514,22 +477,6 @@ export function Header() {
           <a href="#contact" className="nav-cta" onClick={handleNavClick}>
             Get Vanguard
           </a>
-
-          <button
-            className="nav-theme-toggle"
-            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-            onClick={toggleTheme}
-          >
-            {theme === "dark" ? (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-              </svg>
-            ) : (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-              </svg>
-            )}
-          </button>
 
           <button
             ref={toggleRef}
