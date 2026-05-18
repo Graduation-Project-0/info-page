@@ -40,6 +40,8 @@ export function Footer() {
   const controls = useAnimation();
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (isInView) {
@@ -47,12 +49,36 @@ export function Footer() {
     }
   }, [isInView, controls]);
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
-      setSubscribed(true);
-      setEmail("");
-      setTimeout(() => setSubscribed(false), 3000);
+    if (!email || loading) return;
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const formData = new FormData();
+      formData.append("email", email);
+
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (res.ok) {
+        setSubscribed(true);
+        setEmail("");
+        setTimeout(() => setSubscribed(false), 4000);
+      } else {
+        const json = await res.json();
+        setError(json.error || "Something went wrong");
+        setTimeout(() => setError(""), 4000);
+      }
+    } catch {
+      setError("Network error. Please try again.");
+      setTimeout(() => setError(""), 4000);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -423,6 +449,7 @@ export function Footer() {
               />
               <button
                 type="submit"
+                disabled={loading || subscribed}
                 className="footer-newsletter-submit"
                 style={{
                   position: "absolute",
@@ -452,9 +479,14 @@ export function Footer() {
                     "var(--color-accent)")
                 }
               >
-                {subscribed ? "Subscribed" : "Subscribe"}
+                {subscribed ? "Subscribed ✓" : loading ? "Sending..." : "Subscribe"}
               </button>
             </form>
+            {error && (
+              <p style={{ color: "#ef4444", fontSize: "0.8rem", marginTop: "0.5rem" }}>
+                {error}
+              </p>
+            )}
           </div>
         </motion.div>
 

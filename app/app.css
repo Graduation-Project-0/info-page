@@ -680,7 +680,24 @@ img {
   }
 }
 
-/* prefers-color-scheme: dark — no overrides; theme is dark by default */
+/* Light mode overrides */
+[data-theme="light"] {
+  --color-bg: #f5f7f5;
+  --color-bg-elevated: #eef1ee;
+  --color-bg-card: #e6ebe6;
+  --color-border: #c8d4c8;
+  --color-text: #0f1a0f;
+  --color-text-muted: #556655;
+  --color-green-dark: #d4edcc;
+  --color-green-mid: #1c7304;
+  --color-accent: #1c7304;
+  --color-accent-rgb: 28, 115, 4;
+  --color-accent-hover: #248a05;
+  --color-accent-soft: rgba(28, 115, 4, 0.12);
+  --color-accent-glow: rgba(28, 115, 4, 0.15);
+  --color-success: #2e7d52;
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
 
 @media (forced-colors: active) {
   .btn-primary {
