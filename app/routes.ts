@@ -4,7 +4,7 @@ export default [
   index("routes/home.tsx"),
   route("privacy", "routes/privacy.tsx"),
   route("terms", "routes/terms.tsx"),
-  route("api/contact", "routes/api.contact.ts"),
-  route("api/newsletter", "routes/api.newsletter.ts"),
-  route("*", "routes/catchall.ts"),
+  // route("api/contact", "routes/api.contact.ts"),
+  // route("api/newsletter", "routes/api.newsletter.ts"),
+  // route("*", "routes/catchall.ts"),
 ] satisfies RouteConfig;
